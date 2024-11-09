@@ -31,8 +31,6 @@ const financeApplicationSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    
-
 });
 
 const FinanceApplication = mongoose.model('financeApplication', financeApplicationSchema);
