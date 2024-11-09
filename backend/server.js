@@ -44,3 +44,7 @@ app.get('/test-add-user', async (req,res) =>{
     }
 })
 
+// Finance Application Route
+const financeApplicationRoutes = require('./routes/financeApplicationRoutes');
+app.use('/finance-applications',financeApplicationRoutes);
+
