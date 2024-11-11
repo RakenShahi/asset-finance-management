@@ -1,17 +1,47 @@
 const express = require ('express');
 const router = express.Router();
 const FinanceApplication = require('../models/FinanceApplication');
+const User = require('../models/User');
+const auth = require ('../middleware/auth');
 
 // Create a new Finance Application
 router.post('/', async (req,res) =>{
     try{
+
+        // Ensure that the userId is included in the request body
+        const {userId, income, expenses, assets, liabilities} = req.body;
+        // Check if the User exists
+        const user = await User.findById(req.body);
+        if(!user){
+            return res.status(404).json({message:'User not found'});
+        }
+
         const newApplication = new FinanceApplication(req.body);
         const savedApplication = await newApplication.save();
         res.status(201).json(savedApplication);
     } catch (error) {
+        console.error('Error saving applicaiton::', error.message);
         res.status(500).json({error:error.message});
     }
 });
+
+// Create a new Finance Application (protected)
+router.post('/', auth, async (req, res) => {
+    try {
+      const { income, expenses, assets, liabilities } = req.body;
+      const newApplication = new Application({
+        userId: req.user.userId,
+        income,
+        expenses,
+        assets,
+        liabilities,
+      });
+      const savedApplication = await newApplication.save();
+      res.status(201).json(savedApplication);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 
 // Get all Finance Applications
 router.get('/', async (req, res)=> {
@@ -20,6 +50,16 @@ router.get('/', async (req, res)=> {
         res.json(applications);
     } catch (error){
         res.status(500).json({error:error.message});
+    }
+});
+
+// Get all Finance Applications for the logged-in User
+router.get('/',auth, async (req,res) => {
+    try{
+        const applications = await FinanceApplication.find({userId:req.user.userId});
+        res.json(applications);
+    } catch (error){
+        res.status(500),json({message: error.message});
     }
 });
 

@@ -3,7 +3,7 @@ const mongoose = require ('mongoose');
 const financeApplicationSchema = new mongoose.Schema({
     userId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        ref:'User', // Allows mongoDB, mongoose to understand that userId points to a specific user
         required: true,
     },
     personalDetails:{

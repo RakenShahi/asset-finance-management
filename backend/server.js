@@ -1,7 +1,9 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require ('express');
 const mongoose = require ('mongoose');
 const app = express();
+app.use(cors());
 
 // To parse JSON, Middleware
 app.use(express.json());
@@ -47,4 +49,8 @@ app.get('/test-add-user', async (req,res) =>{
 // Finance Application Route
 const financeApplicationRoutes = require('./routes/financeApplicationRoutes');
 app.use('/finance-applications',financeApplicationRoutes);
+
+// User Route
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/users',userRoutes);
 
