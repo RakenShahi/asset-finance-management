@@ -27,28 +27,9 @@ app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);
 });
 
-// Import Models
-const User = require('./models/User');
-const FinanceApplication = require('./models/FinanceApplication');
-
-// Testing route to add a user
-app.get('/test-add-user', async (req,res) =>{
-    try{
-        const newUser = new User({
-            name:'Raken Shahi',
-            email:'rakenshahi+test@gmail.com',
-            password:'raken',
-        });
-        await newUser.save();
-        res.json({message:'User Created!!!', user:newUser});
-    } catch (err){
-        res.status(500).json({error:error.message});
-    }
-})
-
 // Finance Application Route
 const financeApplicationRoutes = require('./routes/financeApplicationRoutes');
-app.use('/finance-applications',financeApplicationRoutes);
+app.use('/api/finance-applications',financeApplicationRoutes);
 
 // User Route
 const userRoutes = require('./routes/userRoutes');

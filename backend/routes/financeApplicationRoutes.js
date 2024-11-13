@@ -4,32 +4,13 @@ const FinanceApplication = require('../models/FinanceApplication');
 const User = require('../models/User');
 const auth = require ('../middleware/auth');
 
-// Create a new Finance Application
-router.post('/', async (req,res) =>{
-    try{
-
-        // Ensure that the userId is included in the request body
-        const {userId, income, expenses, assets, liabilities} = req.body;
-        // Check if the User exists
-        const user = await User.findById(req.body);
-        if(!user){
-            return res.status(404).json({message:'User not found'});
-        }
-
-        const newApplication = new FinanceApplication(req.body);
-        const savedApplication = await newApplication.save();
-        res.status(201).json(savedApplication);
-    } catch (error) {
-        console.error('Error saving applicaiton::', error.message);
-        res.status(500).json({error:error.message});
-    }
-});
-
-// Create a new Finance Application (protected)
-router.post('/', auth, async (req, res) => {
+// Create a new Finance Application (Protected)
+router.post('/createuserapplication', auth, async (req, res) => {
+    console.log('Route of creating application of user')
     try {
       const { income, expenses, assets, liabilities } = req.body;
-      const newApplication = new Application({
+      console.log(income,expenses,assets,liabilities);
+      const newApplication = new FinanceApplication({
         userId: req.user.userId,
         income,
         expenses,
@@ -43,23 +24,13 @@ router.post('/', auth, async (req, res) => {
     }
   });
 
-// Get all Finance Applications
-router.get('/', async (req, res)=> {
-    try{
-        const applications = await FinanceApplication.find();
-        res.json(applications);
-    } catch (error){
-        res.status(500).json({error:error.message});
-    }
-});
-
 // Get all Finance Applications for the logged-in User
-router.get('/',auth, async (req,res) => {
+router.get('/userapplications',auth, async (req,res) => {
     try{
         const applications = await FinanceApplication.find({userId:req.user.userId});
         res.json(applications);
     } catch (error){
-        res.status(500),json({message: error.message});
+        res.status(500).json({message: error.message});
     }
 });
 
@@ -77,31 +48,49 @@ router.get('/:id', async (req,res) => {
 });
 
 
-// Update a Finance Application by ID
-router.put('/:id', async (req,res) => {
-    try{
-        const updateApplication = await FinanceApplication.findByIdAndUpdate (
-            req.params.id,
-            req.body,
-            {
-                new : true
-            }
-        )
-        if (!updateApplication) return res.status(400).json({message: 'Application not found'});
-        res.json(updateApplication);
-    } catch (error) {
-        res.status(500).json({error: error.message});
-    }
-});
-
-// Delete a Finance Application by ID
-router.delete('/:id', async (req, res) => {
+// Update Finance Application for the logged-in User
+router.put('/:id', auth, async (req, res) => {
     try {
-        const deletedApplication = await FinanceApplication.findByIdAndDelete(req.params.id);
-        if (!deletedApplication) return res.status(404).json({message: 'Applicaiton not Found'});
-        res.json({message: 'Application Deleted'});
-    } catch (error){
-        res.status(500).json({error:error.message});
+      const applicationId = req.params.id;
+      const { income, expenses, assets, liabilities } = req.body;
+  
+      // Check if the application exists and belongs to the logged-in user
+      const updateApplication = await FinanceApplication.findOneAndUpdate(
+        { _id: applicationId, userId: req.user.userId }, // Ensure the application belongs to the current user
+        { income, expenses, assets, liabilities },
+        { new: true } // Return the updated document
+      );
+  
+      if (!updateApplication) {
+        return res.status(400).json({ message: 'Application not found or does not belong to user' });
+      }
+  
+      res.json(updateApplication);
+    } catch (error) {
+      console.error('Error in PUT /updateuserapplication:', error);
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+// Delete a Finance Application by ID (Only for the logged-in User)
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const applicationId = req.params.id;
+        
+        // Find and delete the application, ensuring it belongs to the logged-in user
+        const deletedApplication = await FinanceApplication.findOneAndDelete({
+            _id: applicationId,
+            userId: req.user.userId, // Only delete if the user owns the application
+        });
+
+        if (!deletedApplication) {
+            return res.status(404).json({ message: 'Application not found or does not belong to the user' });
+        }
+
+        res.json({ message: 'Application Deleted' });
+    } catch (error) {
+        console.error('Error in DELETE /userapplication:', error);
+        res.status(500).json({ message: error.message });
     }
 });
 

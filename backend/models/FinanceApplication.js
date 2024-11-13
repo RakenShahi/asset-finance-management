@@ -6,11 +6,6 @@ const financeApplicationSchema = new mongoose.Schema({
         ref:'User', // Allows mongoDB, mongoose to understand that userId points to a specific user
         required: true,
     },
-    personalDetails:{
-        name: {type: String, required:true},
-        address: {type: String, required:true},
-        phone: {type: String, required:true}
-    },
     income:{
         type: Number,
         required: true,

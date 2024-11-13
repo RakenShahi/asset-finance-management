@@ -11,10 +11,6 @@ const userSchema = new mongoose.Schema ({
         required: true,
         unique:true,
     },
-    address:{
-        type: String,
-        required: false,
-    },
     password:{
         type:String,
         required:true
@@ -24,7 +20,6 @@ const userSchema = new mongoose.Schema ({
         default: Date.now,
     },
 })
-
 
 
 const User = mongoose.model('User', userSchema);
