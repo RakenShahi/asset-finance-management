@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from './config';  // Import the global constant
+import { API_URL } from '../config';  // Import the global constant
 
 
 function UserProfile({setIsAuthenticated}) {

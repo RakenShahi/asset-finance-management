@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';  // Import the global constant
 import { useNavigate, NavLink } from 'react-router-dom';
 
 function Login({setIsAuthenticated}) {
@@ -11,13 +12,16 @@ function Login({setIsAuthenticated}) {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(''); // Clear previous errors
-
+    
+    console.log('login pressed with url,', API_URL);
     try {
-      const res = await axios.post('${API_URL}/api/users/login', { email, password });
+      const res = await axios.post(`${API_URL}/api/users/login`, { email, password });
+      console.log('token is', res.data.token);
       localStorage.setItem('token', res.data.token); // Store JWT in localStorage
       setIsAuthenticated(true); // Update auth status
       navigate('/list'); // Redirect to application list page
     } catch (err) {
+      console.log('error occured', err);
       setError(err.response?.data?.message || 'Login failed');
     }
   };

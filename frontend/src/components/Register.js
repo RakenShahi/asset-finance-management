@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { API_URL } from './config';  // Import the global constant
+import { API_URL } from '../config';  // Import the global constant
 
 
 function Register() {
