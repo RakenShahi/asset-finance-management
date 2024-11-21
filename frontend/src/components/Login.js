@@ -13,7 +13,7 @@ function Login({setIsAuthenticated}) {
     setError(''); // Clear previous errors
 
     try {
-      const res = await axios.post('http://localhost:5001/api/users/login', { email, password });
+      const res = await axios.post('${API_URL}/api/users/login', { email, password });
       localStorage.setItem('token', res.data.token); // Store JWT in localStorage
       setIsAuthenticated(true); // Update auth status
       navigate('/list'); // Redirect to application list page

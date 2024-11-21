@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from './config';  // Import the global constant
+
 
 function UserProfile({setIsAuthenticated}) {
   const [name, setName] = useState('');
@@ -15,7 +17,7 @@ function UserProfile({setIsAuthenticated}) {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token'); // Get the auth token
-        const response = await axios.get('http://localhost:5001/api/users/profile', {
+        const response = await axios.get(`${API_URL}/api/users/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const userData = response.data;
@@ -37,7 +39,7 @@ function UserProfile({setIsAuthenticated}) {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        'http://localhost:5001/api/users/profile',
+        `${API_URL}/api/users/profile`,
         { name, email, password },
         { headers: { Authorization: `Bearer ${token}` } }
       );

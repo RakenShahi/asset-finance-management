@@ -8,7 +8,7 @@ import Register from './components/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserProfile from './components/UserProfile';
 import axios from 'axios';
-
+import { API_URL } from './config';  // Import the global constant
 
 function App() {
   const [applications, setApplications] = useState([]);
@@ -27,7 +27,7 @@ function App() {
         return;
       }
   
-      const response = await axios.get('http://localhost:5001/api/finance-applications/userapplications/', {
+      const response = await axios.get(`${API_URL}/api/finance-applications/userapplications/`, {
         headers: { 
           Authorization: `Bearer ${token}` // Passing token as part of the header
         },

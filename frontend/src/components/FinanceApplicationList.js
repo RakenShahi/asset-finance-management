@@ -1,6 +1,8 @@
 import React, {useState,useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import { API_URL } from './config';  // Import the global constant
+
 
 const FinanceApplicationList = ({applications,fetchApplications,onEdit}) => {
     const navigate = useNavigate();
@@ -24,7 +26,7 @@ const FinanceApplicationList = ({applications,fetchApplications,onEdit}) => {
               };
   
               // Send the DELETE request with the Authorization header
-              await axios.delete(`http://localhost:5001/api/finance-applications/${id}`, config);
+              await axios.delete(`${API_URL}/api/finance-applications/${id}`, config);
   
               // console.log(`Application ${id} deleted!!!`);
   
@@ -40,7 +42,7 @@ const FinanceApplicationList = ({applications,fetchApplications,onEdit}) => {
         // Fetch finance applications from the backend
         const fetchApplications = async () =>{
             try{
-                const response = await axios.get('http://localhost:5001/api/finance-applications');
+                const response = await axios.get(`${API_URL}/api/finance-applications`);
             } catch (error){
                 console.error('Error Fetching applications', error);
             }

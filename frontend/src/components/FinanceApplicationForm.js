@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from './config';  // Import the global constant
+
 
 const FinanceApplicationForm = ({ onApplicationAdded, editingApplication, clearEditing }) => {
   const navigate = useNavigate();
@@ -58,10 +60,10 @@ const FinanceApplicationForm = ({ onApplicationAdded, editingApplication, clearE
         },
       };
       if (editingApplication) {
-        await axios.put(`http://localhost:5001/api/finance-applications/${editingApplication._id}`, applicationData, config);
+        await axios.put(`${API_URL}/api/finance-applications/${editingApplication._id}`, applicationData, config);
         clearEditing();  // Ensure this clears the edit state
       } else {
-        await axios.post('http://localhost:5001/api/finance-applications/createuserapplication', applicationData, config);  // Send token with request
+        await axios.post(`${API_URL}/api/finance-applications/createuserapplication`, applicationData, config);  // Send token with request
       }
 
       onApplicationAdded();

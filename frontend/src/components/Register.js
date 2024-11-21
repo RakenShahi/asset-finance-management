@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, NavLink } from 'react-router-dom';
+import { API_URL } from './config';  // Import the global constant
+
 
 function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -14,7 +17,7 @@ function Register() {
     setError(''); // Clear previous errors
 
     try {
-      await axios.post('http://localhost:5001/api/users/register', { name, email, password });
+      await axios.post(`${API_URL}/api/users/register`, { name, email, password });
       alert('Registration successful! You can now log in.');
       navigate('/login'); // Redirect to login page after successful registration
     } catch (err) {
