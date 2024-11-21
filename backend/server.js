@@ -3,16 +3,8 @@ const cors = require('cors');
 const express = require ('express');
 const mongoose = require ('mongoose');
 const app = express();
-const allowedOrigins = [
-    'http://ec2-3-107-212-234.ap-southeast-2.compute.amazonaws.com', // Front-end URL here EC2 Instance
-    'http://localhost:3000' // optionally, if testing locally
-  ];
-  
-  app.use(cors({
-    origin: allowedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // specify allowed methods
-    credentials: true, // if you are using cookies or sessions
-  }));
+app.use(cors());
+
 // To parse JSON, Middleware
 app.use(express.json());
 
