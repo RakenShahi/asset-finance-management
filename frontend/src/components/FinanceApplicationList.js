@@ -38,17 +38,17 @@ const FinanceApplicationList = ({applications,fetchApplications,onEdit}) => {
       }
   };
   
-    useEffect(() => {
-        // Fetch finance applications from the backend
-        const fetchApplications = async () =>{
-            try{
-                const response = await axios.get(`${API_URL}/api/finance-applications`);
-            } catch (error){
-                console.error('Error Fetching applications', error);
-            }
-        };
-        fetchApplications();
-    },[]);
+    // useEffect(() => {
+    //     // Fetch finance applications from the backend
+    //     const fetchApplications = async () =>{
+    //         try{
+    //             const response = await axios.get(`${API_URL}/api/finance-applications`);
+    //         } catch (error){
+    //             console.error('Error Fetching applications', error);
+    //         }
+    //     };
+    //     fetchApplications();
+    // },[]);
 
     const handleEditClick = (app) =>{
         onEdit(app);
